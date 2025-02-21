@@ -3,14 +3,10 @@ import { motion } from "framer-motion";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  getCustomerById,
-  UpdateCustomerByAdmin,
-} from "../../services/api";
+import { getCustomerById, UpdateCustomerByAdmin } from "../../services/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
-import { calculateTotalPrice } from "../../utils/priceCalculator";
 const isWeekday = (date) => {
   const day = date.getDay();
   return day !== 0 && day !== 6;
@@ -174,16 +170,10 @@ const UpdateBookingbyAdminForm = ({
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
-  
-const [formData, setFormData] = useState(INITIAL_FORM_STATE);
+
+  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [errors, setErrors] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
-  useEffect(() => {
-    if (Object.keys(formData).length > 0) {
-      const newTotalPrice = calculateTotalPrice(formData);
-      setTotalPrice(newTotalPrice);
-    }
-  }, [formData]);
 
   const validateForm = useCallback(() => {
     const newErrors = {};
@@ -245,8 +235,6 @@ const [formData, setFormData] = useState(INITIAL_FORM_STATE);
 
       setFormData((prevState) => {
         const newFormData = { ...prevState, [name]: uppercasedValue };
-        const newTotalPrice = calculateTotalPrice(newFormData);
-        setTotalPrice(newTotalPrice);
 
         if (name === "postcode") {
           const validPostcodes = ["RH10", "RH11", "RH12", "RH13"];
@@ -270,7 +258,7 @@ const [formData, setFormData] = useState(INITIAL_FORM_STATE);
         return newFormData;
       });
     },
-    [errors, calculateTotalPrice]
+    [errors]
   );
   const handleServiceChange = (selectedOption) => {
     setFormData((prevState) => {
@@ -280,8 +268,6 @@ const [formData, setFormData] = useState(INITIAL_FORM_STATE);
         gutterCleaningOptions: [],
         gutterRepairsOptions: [],
       };
-      const newTotalPrice = calculateTotalPrice(newFormData);
-      setTotalPrice(newTotalPrice);
       return newFormData;
     });
   };
