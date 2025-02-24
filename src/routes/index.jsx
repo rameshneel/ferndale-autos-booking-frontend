@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
-import PrivateRoute from "./PrivateRoute";
 import Loading from "./Loading";
+import ProtectedRoute from "./PrivateRoute";
 
 const ServiceBookingForm = lazy(() =>
   import("../components/ServiceBookingForm/index")
@@ -43,19 +43,20 @@ const AppRoutes = () => {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<ServiceBookingForm />} />
-            {/* <Route path="term" element={<TermsAndConditions />} /> */}
-
             {/* Authentication Routes */}
             <Route path="login" element={<LoginPage />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="verify-token/:token" element={<VerifyToken />} />
             <Route path="reset-password/:token" element={<ResetPassword />} />
-
-            {/* Protected Admin Routes */}
-            <Route path="/admin" element={<DashboardLayout />}>
-              {/* Protected Routes */}
-              <Route element={<PrivateRoute />}>
-                {/* Admin Specific Routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route element={<ProtectedRoute />}>
                 <Route path="profile" element={<UserProfile />} />
                 <Route
                   path="booking/customer"
@@ -68,8 +69,48 @@ const AppRoutes = () => {
                 <Route path="booking/slotmanager" element={<SlotManager />} />
               </Route>
             </Route>
+            {/* <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route
+                path="profile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="booking/customer"
+                element={
+                  <ProtectedRoute>
+                    <BookingbyAdminForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="booking/calender"
+                element={
+                  <ProtectedRoute>
+                    <BookingManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="booking/slotmanager"
+                element={
+                  <ProtectedRoute>
+                    <SlotManager />
+                  </ProtectedRoute>
+                }
+              />
+            </Route> */}
 
-            {/* Redirect unknown routes to home or a 404 page */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Suspense>

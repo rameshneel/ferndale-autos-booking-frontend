@@ -1,56 +1,75 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 const BookingCalendar = ({ onDateSelect }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+  const daysInMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  ).getDate();
+  const firstDayOfMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    1
+  ).getDay();
 
   const handleDateClick = (day) => {
-    const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    const selected = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day
+    );
     setSelectedDate(selected);
     onDateSelect(selected);
   };
 
   const handlePrevMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    );
     setSelectedDate(null);
   };
 
   const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+    );
     setSelectedDate(null);
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="flex items-center justify-between px-6 py-4 bg-gray-100">
-        <motion.button 
-          whileHover={{ scale: 1.1 }} 
+    <div className="max-w-md mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+      <div className="flex items-center justify-between px-6 py-4 bg-gray-700">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={handlePrevMonth} 
-          className="p-2 rounded-full hover:bg-gray-200"
+          onClick={handlePrevMonth}
+          className="p-2 rounded-full hover:bg-gray-600 text-gray-300 hover:text-teal-400"
         >
           <ChevronLeftIcon className="w-6 h-6" />
         </motion.button>
-        <h2 className="text-2xl font-semibold">
-          {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+        <h2 className="text-xl font-semibold text-gray-200">
+          {currentDate.toLocaleString("default", {
+            month: "long",
+            year: "numeric",
+          })}
         </h2>
-        <motion.button 
-          whileHover={{ scale: 1.1 }} 
+        <motion.button
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={handleNextMonth} 
-          className="p-2 rounded-full hover:bg-gray-200"
+          onClick={handleNextMonth}
+          className="p-2 rounded-full hover:bg-gray-600 text-gray-300 hover:text-teal-400"
         >
           <ChevronRightIcon className="w-6 h-6" />
         </motion.button>
       </div>
       <div className="grid grid-cols-7 gap-2 p-4">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="text-center font-semibold text-gray-600">
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+          <div key={day} className="text-center font-semibold text-gray-400">
             {day}
           </div>
         ))}
@@ -63,12 +82,12 @@ const BookingCalendar = ({ onDateSelect }) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleDateClick(i + 1)}
-            className={`cursor-pointer text-center p-2 rounded-full ${
+            className={`cursor-pointer text-center p-2 rounded-full text-gray-200 ${
               selectedDate &&
               selectedDate.getDate() === i + 1 &&
               selectedDate.getMonth() === currentDate.getMonth()
-                ? 'bg-blue-500 text-white'
-                : 'hover:bg-gray-100'
+                ? "bg-teal-500 text-white"
+                : "hover:bg-gray-700"
             }`}
           >
             {i + 1}
@@ -81,7 +100,88 @@ const BookingCalendar = ({ onDateSelect }) => {
 
 export default BookingCalendar;
 
+// import React, { useState } from 'react';
+// import { motion } from 'framer-motion';
+// import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
+// const BookingCalendar = ({ onDateSelect }) => {
+//   const [currentDate, setCurrentDate] = useState(new Date());
+//   const [selectedDate, setSelectedDate] = useState(null);
+
+//   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+//   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+
+//   const handleDateClick = (day) => {
+//     const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+//     setSelectedDate(selected);
+//     onDateSelect(selected);
+//   };
+
+//   const handlePrevMonth = () => {
+//     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+//     setSelectedDate(null);
+//   };
+
+//   const handleNextMonth = () => {
+//     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+//     setSelectedDate(null);
+//   };
+
+//   return (
+//     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+//       <div className="flex items-center justify-between px-6 py-4 bg-gray-100">
+//         <motion.button
+//           whileHover={{ scale: 1.1 }}
+//           whileTap={{ scale: 0.9 }}
+//           onClick={handlePrevMonth}
+//           className="p-2 rounded-full hover:bg-gray-200"
+//         >
+//           <ChevronLeftIcon className="w-6 h-6" />
+//         </motion.button>
+//         <h2 className="text-2xl font-semibold">
+//           {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+//         </h2>
+//         <motion.button
+//           whileHover={{ scale: 1.1 }}
+//           whileTap={{ scale: 0.9 }}
+//           onClick={handleNextMonth}
+//           className="p-2 rounded-full hover:bg-gray-200"
+//         >
+//           <ChevronRightIcon className="w-6 h-6" />
+//         </motion.button>
+//       </div>
+//       <div className="grid grid-cols-7 gap-2 p-4">
+//         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+//           <div key={day} className="text-center font-semibold text-gray-600">
+//             {day}
+//           </div>
+//         ))}
+//         {Array.from({ length: firstDayOfMonth }, (_, i) => (
+//           <div key={`empty-${i}`} />
+//         ))}
+//         {Array.from({ length: daysInMonth }, (_, i) => (
+//           <motion.div
+//             key={i + 1}
+//             whileHover={{ scale: 1.1 }}
+//             whileTap={{ scale: 0.95 }}
+//             onClick={() => handleDateClick(i + 1)}
+//             className={`cursor-pointer text-center p-2 rounded-full ${
+//               selectedDate &&
+//               selectedDate.getDate() === i + 1 &&
+//               selectedDate.getMonth() === currentDate.getMonth()
+//                 ? 'bg-blue-500 text-white'
+//                 : 'hover:bg-gray-100'
+//             }`}
+//           >
+//             {i + 1}
+//           </motion.div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default BookingCalendar;
 
 // import React, { useState, useEffect } from 'react';
 // import { motion } from 'framer-motion';
@@ -106,7 +206,6 @@ export default BookingCalendar;
 //   console.log("selected ",selectedDate);
 //   console.log("booking",bookings);
 
-      
 //   const localDate = new Date(selectedDate);
 //   const utcDate = new Date(
 //     localDate.getTime() - localDate.getTimezoneOffset() * 60000

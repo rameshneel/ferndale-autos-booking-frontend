@@ -72,13 +72,6 @@ const CustomerInfoModal = ({ isOpen, onClose, customerId }) => {
                 <p>{customer.contactNumber}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Address</h3>
-                <p>
-                  {customer.firstLineOfAddress}, {customer.town},{" "}
-                  {customer.postcode}
-                </p>
-              </div>
-              <div>
                 <h3 className="font-semibold">Date</h3>
                 <p>{new Date(customer.selectedDate).toLocaleDateString()}</p>
               </div>
@@ -87,36 +80,16 @@ const CustomerInfoModal = ({ isOpen, onClose, customerId }) => {
                 <p>{customer.selectedTimeSlot}</p>
               </div>
               <div>
+                <h3 className="font-semibold">Car Make & Model</h3>
+                <p>{customer.makeAndModel}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold">Registration No</h3>
+                <p>{customer.registrationNo}</p>
+              </div>
+              <div>
                 <h3 className="font-semibold">Total Price</h3>
                 <p>£{customer.totalPrice}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold">Service</h3>
-                <p>{customer.selectService}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold">Gutter Cleaning Options</h3>
-                <p>{customer.gutterCleaningOptions.join(", ")}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold">Gutter Repairs Options</h3>
-                <p>
-                  {customer.gutterRepairsOptions.length
-                    ? customer.gutterRepairsOptions.join(", ")
-                    : "None"}
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold">Number Of Bedrooms</h3>
-                <p>{customer.numberOfBedrooms}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold">Home Style</h3>
-                <p>{customer.selectHomeStyle}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold">Message</h3>
-                <p>{customer.message}</p>
               </div>
               <div>
                 <h3 className="font-semibold">Payment Method</h3>
@@ -130,58 +103,42 @@ const CustomerInfoModal = ({ isOpen, onClose, customerId }) => {
                 <h3 className="font-semibold">Order ID</h3>
                 <p>{customer.paypalOrderId}</p>
               </div>
-              {customer. molliePaymentId &&<div>
-                <h3 className="font-semibold"> mollie Payment Id</h3>
-                <p>{customer. molliePaymentId}</p>
-              </div>}
               <div>
                 <h3 className="font-semibold">Booking Status</h3>
-                <p>{customer.isBooked ? "Booked" : "Not Booked"}</p>
+                <p>
+                  {customer.bookedBy === "customer" ? "Booked" : "Not Booked"}
+                </p>
               </div>
               <div>
                 <h3 className="font-semibold">Booked By</h3>
                 <p>{customer.bookedBy}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Payment Status</h3>
-                <p>{customer.paymentStatus}</p>
-              </div>
-              {/* <div>
-                <h4 className="font-medium">Capture ID:</h4>
-                <p>{customer.captureId || "N/A"}</p>
-              </div> */}
-              <div>
-                <h4 className="font-medium">Refund ID:</h4>
-                <p>{customer.refundId || "N/A"}</p>
+                <h3 className="font-semibold">
+                  Cancellation Policy Acknowledged
+                </h3>
+                <p>{customer.awareOfCancellationPolicy ? "Yes" : "No"}</p>
               </div>
               <div>
-                <h4 className="font-medium">Refund Status:</h4>
-                <p>{customer.refundStatus || "N/A"}</p>
-              </div>
-              <div>
-                <h4 className="font-medium">Refund Amount:</h4>
-                <p>
-                  {customer.refundAmount !== undefined
-                    ? `£${customer.refundAmount.toFixed(2)}`
-                    : "N/A"}
-                </p>
-              </div>
-              <div>
-                <h4 className="font-medium">Refund Reason:</h4>
-                <p>{customer.refundReason || "N/A"}</p>
-              </div>
-              <div>
-                <h4 className="font-medium">Refund Date:</h4>
-                <p>
-                  {customer.refundDate
-                    ? new Date(customer.refundDate).toLocaleDateString()
-                    : "N/A"}
-                </p>
+                <h3 className="font-semibold">How Did You Hear About Us</h3>
+                <p>{customer.howDidYouHearAboutUs}</p>
               </div>
               <div>
                 <h3 className="font-semibold">Created At</h3>
                 <p>{new Date(customer.createdAt).toLocaleDateString()}</p>
               </div>
+              {customer.refundStatus && (
+                <div>
+                  <h3 className="font-semibold">Refund Status</h3>
+                  <p>{customer.refundStatus}</p>
+                </div>
+              )}
+              {customer.captureId && (
+                <div>
+                  <h4 className="font-medium">Capture ID:</h4>
+                  <p>{customer.captureId}</p>
+                </div>
+              )}
             </div>
           )}
         </div>

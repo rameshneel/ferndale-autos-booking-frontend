@@ -14,8 +14,6 @@ export default function RefundModal({
   isProcessing,
   isSuccess,
 }) {
-  console.log("customer", booking);
-
   return (
     <AnimatePresence>
       {isOpen && (

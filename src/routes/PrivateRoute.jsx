@@ -1,22 +1,37 @@
-//*****************IN PRODUCTION USE CODE ************ */
-import React, { useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Loading from "./Loading";
 
-const PrivateRoute = () => {
-  const { isAuthenticated, loading, checkAuthStatus } = useAuth();
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    if (!isAuthenticated && !loading) {
-      checkAuthStatus();
-    }
-  }, [isAuthenticated, loading, checkAuthStatus]);
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isAuthenticated === null) {
+    return (
+      <div>
+        <Loading />{" "}
+      </div>
+    );
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  return children;
 };
 
-export default PrivateRoute;
+export default ProtectedRoute;
+
+// import { Navigate } from "react-router-dom";
+// import { useAuth } from "./AuthContext";
+
+// const ProtectedRout = ({ children }) => {
+//   const { isAuthenticated } = useAuth();
+
+//   if (isAuthenticated === null) {
+//     return <div>Loading...</div>; /
+//   }
+
+//   return isAuthenticated ? children : <Navigate to="/login" />;
+// };
+
+// export default ProtectedRoute;

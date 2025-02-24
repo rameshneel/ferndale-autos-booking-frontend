@@ -1,86 +1,69 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  useCallback,
-  useEffect,
-} from "react";
-const BASE_URL = "https://in.prelaunchserver.com/zacks-gutter/api/api";
-// const BASE_URL = "https://api.zacsgutters.co.uk/api";
-// const  BASE_URL= "http://localhost:5000/api";
-// const  BASE_URL= "https://6d7e-2405-201-32-8091-b5c5-4f17-bc04-fece.ngrok-free.app/api";
+import { createContext, useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { privateApi, checkAuth, refreshAccessToken } from "../services/api";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  console.log("isAuthenticated", isAuthenticated);
 
-  const checkAuthStatus = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${BASE_URL}/protected`, {
-        method: "POST",
-        credentials: "include",
-      });
-      if (response.ok) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        const response = await checkAuth();
+        setIsAuthenticated(response.data.authenticated);
+      } catch (error) {
+        // Agar 401 aaya, refresh token try karo
+        if (error.response?.status === 401) {
+          await refreshAndRetry();
+        } else {
+          setIsAuthenticated(false);
+        }
       }
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      setIsAuthenticated(false);
-    } finally {
-      setLoading(false);
-    }
+    };
+    initializeAuth();
   }, []);
 
-  // useEffect(() => {
-  //   checkAuthStatus(); // Initial auth check jab provider mount hota hai
-  // }, [checkAuthStatus]);
+  const updateAuthStatus = (authenticated) => {
+    setIsAuthenticated(authenticated);
+    if (!authenticated) navigate("/login");
+  };
 
-  const login = async (email, password) => {
+  const refreshAndRetry = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+      await refreshAccessToken();
+      const { authenticated } = await checkAuth();
+      setIsAuthenticated(authenticated);
+    } catch (error) {
+      updateAuthStatus(false);
+    }
+  };
 
-      if (response.ok) {
-        setIsAuthenticated(true);
-        return { success: true };
-      } else {
-        const errorData = await response.json();
-        return {
-          success: false,
-          message: errorData.message || response.statusText,
-        };
+  useEffect(() => {
+    privateApi.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response?.status === 401) {
+          try {
+            await refreshAccessToken();
+            return privateApi(error.config);
+          } catch (refreshError) {
+            updateAuthStatus(false);
+          }
+        }
+        if (error.response?.status === 403) {
+          navigate("/login");
+        }
+        return Promise.reject(error);
       }
-    } catch (error) {
-      console.error("Login error:", error);
-      return { success: false, message: "An unexpected error occurred." };
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await fetch(`${BASE_URL}/users/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
+    );
+  }, [navigate]);
 
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, loading, checkAuthStatus, login, logout }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, updateAuthStatus }}>
       {children}
     </AuthContext.Provider>
   );
