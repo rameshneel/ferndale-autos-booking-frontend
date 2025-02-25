@@ -16,7 +16,6 @@ const DashboardLayout = lazy(() =>
   import("../components/Admin/DashboardLayout")
 );
 const UserProfile = lazy(() => import("../components/Admin/UserProfile"));
-
 const BookingbyAdminForm = lazy(() =>
   import("../components/Admin/BookingbyAdminForm")
 );
@@ -32,7 +31,6 @@ const AppRoutes = () => {
   return (
     <BrowserRouter basename="/booking/">
       <AuthProvider>
-        {/* Suspense wrapper for lazy loading */}
         <Suspense
           fallback={
             <div>
@@ -43,11 +41,12 @@ const AppRoutes = () => {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<ServiceBookingForm />} />
-            {/* Authentication Routes */}
             <Route path="login" element={<LoginPage />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="verify-token/:token" element={<VerifyToken />} />
             <Route path="reset-password/:token" element={<ResetPassword />} />
+
+            {/* Admin Protected Routes */}
             <Route
               path="/admin"
               element={
@@ -69,48 +68,8 @@ const AppRoutes = () => {
                 <Route path="booking/slotmanager" element={<SlotManager />} />
               </Route>
             </Route>
-            {/* <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <DashboardLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route
-                path="profile"
-                element={
-                  <ProtectedRoute>
-                    <UserProfile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="booking/customer"
-                element={
-                  <ProtectedRoute>
-                    <BookingbyAdminForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="booking/calender"
-                element={
-                  <ProtectedRoute>
-                    <BookingManagement />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="booking/slotmanager"
-                element={
-                  <ProtectedRoute>
-                    <SlotManager />
-                  </ProtectedRoute>
-                }
-              />
-            </Route> */}
 
+            {/* Catch-all route */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Suspense>

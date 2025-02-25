@@ -6,8 +6,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-  console.log("isAuthenticated", isAuthenticated);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +14,6 @@ export const AuthProvider = ({ children }) => {
         const response = await checkAuth();
         setIsAuthenticated(response.data.authenticated);
       } catch (error) {
-        // Agar 401 aaya, refresh token try karo
         if (error.response?.status === 401) {
           await refreshAndRetry();
         } else {
@@ -29,7 +26,6 @@ export const AuthProvider = ({ children }) => {
 
   const updateAuthStatus = (authenticated) => {
     setIsAuthenticated(authenticated);
-    if (!authenticated) navigate("/login");
   };
 
   const refreshAndRetry = async () => {
@@ -54,9 +50,10 @@ export const AuthProvider = ({ children }) => {
             updateAuthStatus(false);
           }
         }
-        if (error.response?.status === 403) {
-          navigate("/login");
-        }
+        // if (error.response?.status === 403) {
+        //   // navigate("/login");
+        //   updateAuthStatus(false);
+        // }
         return Promise.reject(error);
       }
     );

@@ -178,17 +178,17 @@ const BookingForm = () => {
     setLoading(true);
     try {
       const response = await checkCustomer(formData);
-      if (response.success) {
+      if (response.data.success) {
         setPayMentModalOpen(true);
         toast.success("Booking details verified!", {
           position: "top-center",
           autoClose: 2000,
         });
       } else {
-        toast.error(response.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data?.data.message || "An error occurred");
     } finally {
       setLoading(false);
     }
