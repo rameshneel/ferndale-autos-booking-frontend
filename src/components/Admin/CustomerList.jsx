@@ -113,11 +113,23 @@ const Booking = () => {
         sortType: "basic",
         Cell: ({ value }) => (value ? value.toUpperCase() : "N/A"),
       },
+      // {
+      //   Header: "Booked By",
+      //   accessor: "bookedBy",
+      //   sortType: "basic",
+      //   Cell: ({ value }) => (value ? value.toUpperCase() : "N/A"),
+      // },
       {
         Header: "Booked By",
         accessor: "bookedBy",
         sortType: "basic",
-        Cell: ({ value }) => (value ? value.toUpperCase() : "N/A"),
+        Cell: ({ value, row }) => {
+          const bookedBy = value ? value.toUpperCase() : "N/A";
+          const bookingMethod =
+            row.original.bookedBy === "admin" ? "offline" : "online";
+
+          return `${bookedBy} - ${bookingMethod}`;
+        },
       },
       {
         Header: "Payment",
