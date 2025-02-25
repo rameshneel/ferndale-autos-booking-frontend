@@ -120,15 +120,15 @@ const Booking = () => {
       //   Cell: ({ value }) => (value ? value.toUpperCase() : "N/A"),
       // },
       {
-        Header: "Booked By",
+        Header: "Booked Method",
         accessor: "bookedBy",
         sortType: "basic",
         Cell: ({ value, row }) => {
           const bookedBy = value ? value.toUpperCase() : "N/A";
           const bookingMethod =
-            row.original.bookedBy === "admin" ? "offline" : "online";
+            row.original.bookedBy === "admin" ? "OFFLINE" : "ONLINE";
 
-          return `${bookedBy} - ${bookingMethod}`;
+          return `${bookingMethod}`;
         },
       },
       {
