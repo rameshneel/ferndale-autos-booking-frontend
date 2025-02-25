@@ -1,17 +1,7 @@
-{
-    "rewrites": [
-      {
-        "source": "/booking/:path*",
-        "destination": "/:path*"
-      }
-    ],
-    "redirects": [
-      {
-        "source": "/booking",
-        "destination": "/booking/",
-        "permanent": true
-      }
-    ]
-  }
 
-  
+
+{
+  "routes": [
+    { "src": "/booking/(.*)", "dest": "/booking/index.html" }
+  ]
+}
