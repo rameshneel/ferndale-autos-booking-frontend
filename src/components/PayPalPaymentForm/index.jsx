@@ -150,14 +150,16 @@ const PayPalPaymentForm = ({ isOpen, closeModal, formData }) => {
               className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
             >
               {/* Close Button */}
-              <button
-                onClick={handleCancel}
-                disabled={isLoading}
-                className="absolute right-4 top-4 rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-
+              {/* Close Button (hidden when completed) */}
+              {orderStatus !== "completed" && (
+                <button
+                  onClick={handleCancel}
+                  disabled={isLoading}
+                  className="absolute right-4 top-4 rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
               {/* Header */}
               <h3 className="text-2xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Complete Your Payment

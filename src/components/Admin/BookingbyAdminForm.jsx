@@ -185,6 +185,7 @@ const BookingbyAdminForm = () => {
           position: "top-center",
           autoClose: 2000,
         });
+        navigate("/admin/booking/customer");
       } else {
         toast.error(response.message);
       }
