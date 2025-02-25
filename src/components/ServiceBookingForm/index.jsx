@@ -64,15 +64,39 @@ const BookingForm = () => {
     { value: "Other", label: "Other" },
   ];
 
+  // const customSelectStyles = {
+  //   control: (base) => ({
+  //     ...base,
+  //     minHeight: "48px",
+  //     borderRadius: "0.75rem",
+  //     borderColor: "#CBD5E0",
+  //     boxShadow: "none",
+  //     "&:hover": { borderColor: "#01669A" },
+  //     backgroundColor: "white",
+  //     padding: "0 8px",
+  //   }),
+  //   option: (base, state) => ({
+  //     ...base,
+  //     backgroundColor: state.isSelected
+  //       ? "#01669A"
+  //       : state.isFocused
+  //       ? "#E6F0FA"
+  //       : "white",
+  //     color: state.isSelected ? "white" : "#2D3748",
+  //     padding: "10px 12px",
+  //   }),
+  // };
   const customSelectStyles = {
-    control: (base) => ({
+    control: (base, state) => ({
       ...base,
       minHeight: "48px",
       borderRadius: "0.75rem",
-      borderColor: "#CBD5E0",
+      borderColor: state.isDisabled ? "#E2E8F0" : "#CBD5E0", // Softer border when disabled
       boxShadow: "none",
-      "&:hover": { borderColor: "#01669A" },
-      backgroundColor: "white",
+      "&:hover": { borderColor: state.isDisabled ? "#E2E8F0" : "#01669A" },
+      backgroundColor: state.isDisabled ? "#F7FAFC" : "white", // Light gray when disabled
+      opacity: state.isDisabled ? 0.6 : 1, // Reduce opacity for disabled state
+      cursor: state.isDisabled ? "not-allowed" : "pointer",
       padding: "0 8px",
     }),
     option: (base, state) => ({
@@ -84,9 +108,13 @@ const BookingForm = () => {
         : "white",
       color: state.isSelected ? "white" : "#2D3748",
       padding: "10px 12px",
+      cursor: state.isDisabled ? "not-allowed" : "pointer",
+    }),
+    placeholder: (base, state) => ({
+      ...base,
+      color: state.isDisabled ? "#A0AEC" : "#718099", // Grayed-out placeholder when disabled
     }),
   };
-
   const fetchDisabledDates = useCallback(async (year, month) => {
     try {
       const response = await getDisabledDates(year, month);
@@ -385,7 +413,7 @@ const BookingForm = () => {
                       </motion.p>
                     )}
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                       <Clock className="w-4 h-4 text-[#01669A]" />
                       Preferred Time
@@ -405,6 +433,43 @@ const BookingForm = () => {
                       isLoading={loading}
                       isDisabled={!formData.selectedDate || loading}
                       placeholder="Select a time"
+                      className="text-sm"
+                    />
+                    {errors.selectedTimeSlot && (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="mt-1 text-xs text-red-500 flex items-center gap-1"
+                      >
+                        <AlertCircle className="h-3 w-3" />
+                        {errors.selectedTimeSlot}
+                      </motion.p>
+                    )}
+                  </div> */}
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-[#01669A]" />
+                      Preferred Time
+                    </label>
+                    <Select
+                      value={timeSlotOptions.find(
+                        (option) => option.value === formData.selectedTimeSlot
+                      )}
+                      onChange={(option) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          selectedTimeSlot: option.value,
+                        }))
+                      }
+                      options={timeSlotOptions}
+                      styles={customSelectStyles}
+                      isLoading={loading}
+                      isDisabled={!formData.selectedDate || loading}
+                      placeholder={
+                        !formData.selectedDate
+                          ? "Select a date first"
+                          : "Select a time"
+                      }
                       className="text-sm"
                     />
                     {errors.selectedTimeSlot && (
@@ -551,13 +616,11 @@ const BookingForm = () => {
 
         {/* PayPal Modal */}
         <AnimatePresence>
-          {/* {payMentModalOpen && ( */}
           <PayPalPaymentForm
             isOpen={payMentModalOpen}
             closeModal={() => setPayMentModalOpen(false)}
             formData={formData}
           />
-          {/* )} */}
         </AnimatePresence>
       </motion.div>
       <ToastContainer position="top-right" autoClose={5000} theme="colored" />
