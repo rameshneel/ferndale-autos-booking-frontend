@@ -1,11 +1,8 @@
 {
   "rewrites": [
-    { "source": "/booking/**", "destination": "/index.html" },
-    { "source": "/admin/**", "destination": "/index.html" },
-    { "source": "/login", "destination": "/index.html" },
-    { "source": "/forgot-password", "destination": "/index.html" },
-    { "source": "/verify-token/:token", "destination": "/index.html" },
-    { "source": "/reset-password/:token", "destination": "/index.html" },
-    { "source": "/**", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
