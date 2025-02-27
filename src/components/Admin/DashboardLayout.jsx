@@ -8,6 +8,7 @@ import BookingManagement from "./BookingManagement";
 import SlotManager from "./SlotManager";
 import UserProfile from "./UserProfile";
 import { logout } from "../../services/api";
+import logo from "../../assets/logo-dark.png";
 
 const sidebarItems = [
   { name: "Booking", icon: Calendar, path: "/admin" },
@@ -87,7 +88,7 @@ const DashboardLayout = () => {
       >
         <div className="p-6">
           <h1 className="text-2xl font-semibold tracking-wide text-teal-400">
-            Dashboard
+            <img src={logo} alt="logo" />
           </h1>
         </div>
         <nav className="mt-8 space-y-2 px-3">
