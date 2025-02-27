@@ -119,13 +119,13 @@ const DashboardLayout = () => {
                 ?.name || "Dashboard"}
             </h2>
             <div className="flex items-center space-x-4">
-              {/* <motion.button
+              <motion.button
                 whileHover={{ scale: 1.1 }}
                 className="p-2 text-gray-400 hover:text-teal-400 focus:outline-none"
                 aria-label="Notifications"
               >
                 <Bell className="h-6 w-6" />
-              </motion.button> */}
+              </motion.button>
               <div className="relative" ref={dropdownRef}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
