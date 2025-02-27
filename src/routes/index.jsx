@@ -42,7 +42,19 @@ const AppRoutes = () => {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<ServiceBookingForm />} />
-            <Route path="login" element={<LoginPage />} />
+            {/* <Route path="login" element={<LoginPage />} /> */}
+            <Route
+              path="login"
+              element={
+                <ProtectedRoute
+                  redirectAuthenticated={true}
+                  to="/admin"
+                  allowUnauthenticated={true}
+                >
+                  <LoginPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="verify-token/:token" element={<VerifyToken />} />
             <Route path="reset-password/:token" element={<ResetPassword />} />
