@@ -216,7 +216,7 @@ const BookingForm = () => {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.data.message || "An error occurred");
+      toast.error(error.response?.data.message || "An error occurred");
     } finally {
       setLoading(false);
     }
