@@ -25,7 +25,7 @@ import PayPalPaymentForm from "../PayPalPaymentForm";
 
 const isWeekday = (date) => {
   const day = date.getDay();
-  return day !== 0 && day !== 6;
+  return day !== 1 && day !== 0;
 };
 
 function formatDateForBackend(date) {
