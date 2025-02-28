@@ -95,7 +95,7 @@ const Booking = () => {
     () => [
       { Header: "Name", accessor: "customerName", sortType: "alphanumeric" },
       {
-        Header: "Date",
+        Header: "Booked Date",
         accessor: "selectedDate",
         sortType: "basic",
         Cell: ({ value }) => format(new Date(value), "dd/MM/yyyy"),
