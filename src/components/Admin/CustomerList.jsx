@@ -132,10 +132,10 @@ const Booking = () => {
         },
       },
       {
-        Header: "Payment",
-        accessor: "paymentMethod",
+        Header: "Created At",
+        accessor: "createdAt",
         sortType: "basic",
-        Cell: ({ value }) => (value ? value.toUpperCase() : "N/A"),
+        Cell: ({ value }) => format(new Date(value), "dd/MM/yyyy"),
       },
       {
         Header: "Actions",
