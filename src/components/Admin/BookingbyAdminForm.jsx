@@ -22,6 +22,7 @@ import {
   getDisabledDates,
 } from "../../services/api";
 import PayPalPaymentForm from "../PayPalPaymentForm";
+import { useNavigate } from "react-router-dom";
 
 const isWeekday = (date) => {
   const day = date.getDay();
@@ -36,6 +37,7 @@ function formatDateForBackend(date) {
 }
 
 const BookingbyAdminForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -157,9 +159,9 @@ const BookingbyAdminForm = () => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Invalid email format";
+    // if (!formData.email) newErrors.email = "Email is required";
+    // else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+    //   newErrors.email = "Invalid email format";
     if (!formData.contactNumber)
       newErrors.contactNumber = "Contact number is required";
     else if (!/^\d{10,}$/.test(formData.contactNumber))
@@ -185,7 +187,8 @@ const BookingbyAdminForm = () => {
           position: "top-center",
           autoClose: 2000,
         });
-        navigate("/admin/booking/customer");
+        // navigate("/admin");
+        setTimeout(() => navigate("/admin"), 1000);
       } else {
         toast.error(response.message);
       }
